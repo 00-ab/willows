@@ -1,0 +1,19 @@
+## grapple
+# if d == 0
+We are touching.
+
+## shortRange
+# if abs(d) == 1
+Short range.
+
+## midRange
+# if abs(d) == 2
+Mid range.
+
+## longRange
+# if abs(d) == 3
+Long range.
+
+## far
+# if abs(d) >= 4
+Far apart.
