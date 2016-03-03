@@ -1,0 +1,68 @@
+from __future__ import print_function # something in dd_console requires this, so I use it throughout
+import json # packing and unpacking tasks throughout
+import rules.dr_default as rules # This module contains the rules
+import display.dd_console as display # This module prints the game in a python console
+
+# MODULE SETTINGS
+
+# Import some lists from dr
+moves = rules.moveList
+stats = rules.statList
+players = rules.playerList
+
+def one_turn( dance ):
+	"""
+	One Turn prints the current state of the game,
+	gets a move choice from each player,
+	then executes them and returns the new state.
+	"""
+
+	# Unpack the game data
+	game_data = json.loads( dance )
+
+	# Check to see if the game has ended.
+	# Break if so.
+	if game_data['game']['gameover'] == 1:
+		display.display( dance )
+		print( game_data['game']['gameover_message'] )
+		return 0
+		
+	# Read that data to print the stats and map
+	display.display( dance )
+
+	# Get each player's choice
+	# (This is the only part that changes the data.)
+	dance = json.dumps( game_data )
+	game_data['0']['choice'] = display.get_in(dance, 0)
+	game_data['1']['choice'] = display.get_in(dance, 1)
+	print(" ")
+	
+	# Repack the game data and send it for processing
+	# according to the rules.
+	dance = json.dumps( game_data )
+	
+	dance = rules.turn( dance )
+
+	# Return the new data package.
+	return dance
+
+
+# MAIN #
+
+def start():
+
+	dance = rules.set_stage( 10, 10, 10, 10, 10, 10, 10, 10, 2, 0 )
+	display.setup_lists( moves, stats, players )
+	print( display.moves, display.stats, display.players )
+
+	strng = "\n\n   _-~-:: Welcome to Dance ::-~-_\n\n"
+	print( strng )
+
+	dance_over = 0
+	while dance_over == 0:
+		dance = one_turn( dance )
+		if dance == 0:
+			dance_over = 1
+	
+	strng = "\n\n   ~-_-:: The End ::-_-~\n\n"
+	print( strng )
