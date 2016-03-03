@@ -1,0 +1,44 @@
+Dance is constantly a work in progress.
+I hope people will add to it or fork it.
+For example, it'd be great to have a version
+with a real artist's graphics.
+(No disrespect to Lat2-Terminus16.)
+
+TO ADD:
+
+- give some advantage to will... maybe player with less will in frict gets -1
+  balance? eh...
+- Lots more playtesting
+- choose your own stats mode
+- Mode select / title screen ( mv play.py dg_2p.py, vim DANCE.py 
+	(choose from among all files starting with ./dg_*.py ))
+- init file / options screen
+- Timed mode
+- randomized stats mode
+- AI:
+	- Combat mode
+	- Romance mode
+- story mode:
+	- save files
+	- chapter reader
+	ie character = {
+		'position' : 'lab',
+		'earth' : 57,
+		'rosaline-trust' : 0,
+		}
+	or class soul():
+	or something like that
+	so def chapter reader():
+		for loc in locations:
+			if loc.key == player['position']
+				loc()
+	(except with syntax that works)
+- Maybe consider walls=on to be the default,
+	then work out a way to say
+		if d-from-center < max-d-from-center:
+			retreat = 0
+	(actually, that's a pretty good way to say it)
+
+BUGS:
+- advance+retreat from zero
+- just check advance+retreat intensively

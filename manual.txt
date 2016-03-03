@@ -1,0 +1,387 @@
+INTRODUCTION
+
+DANCE is a two-player game
+depicting tense interaction
+via a language of action and elements.
+DANCE can represent
+both competative and collaborative situations
+and is conflict-ambiguous,
+meaning that a single set of rules
+can represent a wide variety of stories,
+including fights, romances, and conversations.
+
+The players will take turns
+entering secret commands.
+(Even in a collaborative game,
+I suggest that one's choices remain secret.)
+The actions of the players
+are executed simultaneously.
+
+The DANCE ends if a player leaves the stage
+or if their Will reaches zero,
+but what that represents
+will depend on the context.
+I suggest that the players
+should define the context
+before running the program.
+
+IMPORTANT NOTE
+
+Reading this manual
+is no substitute for reading the source code,
+which describes the game's rules
+with more precision and complexity
+than I could ever hope to do here.
+
+Python code is simple and beautiful.
+Understanding the game
+should be an easy task.
+If you are interested,
+I suggest you begin
+with dr_default.py,
+which is the pure Platonic form
+of the game's rule set.
+(Okay, not really.)
+
+CONTROLS
+
+<R> : Jest	<T> : Evade	<Y> : Touch
+<F> : Retreat	<G> : Breathe	<H> : Advance
+<Esc> : Immediate quit.
+<Q> : Quit with a gameover message.
+
+ELEMENTS
+
+A player's personality and status
+is represented by their affinity
+for the four classical elements:
+Earth, Air, Fire, and Water.
+These affinities remain constant 
+throughout each dance.
+Each element has a sub-stat:
+Will, Calm, Heat, and Balance, respectively.
+
+You can think of the element
+as if it were a maximum value,
+and the sub-stat is its present value,
+but this is not precisely the case
+for every element.
+Each one behaves differently.
+
+ELEMENTS::EARTH
+
+Earth represents one's fortitude and determination.
+Will cannot exceed Earth,
+and if Will is less than zero,
+the dance ends.
+If a player exhausts their Will,
+they have been conquered or defeated.
+If both players exhaust their Will simultaneously,
+the game ends in a draw.
+In a romantic situation,
+especially a representation of sex,
+this is the optimal ending.
+
+(So, you see, a fight is a contest
+to reduce the opponent's Will to zero,
+and a fuck is a collaboration
+to reduce both Wills to zero simultaneously.)
+
+The remaining three stats
+all influence the game
+by spilling over to will in some way.
+
+ELEMENTS::AIR
+
+Air is about peace and diffusion.
+Calm is like the breath in one's lungs.
+It cannot exceed Air,
+and if it is reduced below zero
+the difference will spill over
+into damage to will.
+So, for example,
+if Calm is 1,
+and is due to be reduced by 2,
+the new Calm will be 0
+and Will will be reduced by 1.
+
+Most moves cost Calm.
+The management of Calm
+is a matter of minimalism.
+
+ELEMENTS::FIRE
+
+Fire represents passion and intensity.
+Heat is like one's present emotional state
+or one's degree of pain,
+while Fire is like one's ability to tolerate this intensity
+without being distracted.
+Fire is the maximum,
+0 is the minimum.
+Should Heat fall outside this range,
+the difference will spill over
+into damage to Will.
+
+Some moves create Heat in the other player.
+Thus, a low Heat can protect you,
+like a shield for your Will.
+However, having a higher Heat
+than the other player
+will power up those moves:
+so the element of Fire
+rewards risk and brinksmanship.
+
+ELEMENTS::WATER
+
+Water is about flow and grace.
+Balance is nearness to the center.
+Thus Balance can safely fall below 0:
+0 represents perfect balance.
+Its maximum bound is Water,
+its minimum bound is negative Water.
+Falling outside these bounds,
+it will cause damage to Will.
+
+Positive balance is forwardness,
+negative balance is backwardness.
+
+But perhaps more importantly,
+having a better balance than the other player
+will cause them to receive more Heat
+in certain interactions.
+(For specific information,
+see EVENTS::FRICT.)
+In collaborative situations,
+it may be to your advantage
+to set yourself off balance
+to aid your partner.
+
+ELEMENTS::DISTANCE
+
+Unlike the other elements,
+there is only a single distance stat,
+which is shared by both players.
+A distance of 0
+means the two are touching,
+embracing, grappling, wrestling, etc.,
+while a distance of 1
+represents close proximity.
+
+! Not yet implemented !
+
+If DANCE is played with a maximum distance,
+the game can end with a Flight,
+and the responsible player or players
+will be noted.
+This is another kind of draw.
+
+! End not yet implemented !
+
+EVENTS
+
+Some events can occur
+as a result of a certain conjunction
+of elements, moves, and positions.
+Right now, there's only one.
+
+EVENTS::FRICT
+
+"Frict" is short for "Friction".
+It signifies a close contact
+involving an exchange of heat.
+This might be a clash or a collision,
+or some sort of rubbing-together.
+
+A Frict has three effects.
+
+First, the player with less Heat
+will receive a Medium amount of Heat.
+This is how Heat
+can make some moves more powerful.
+
+Second, the player with less Will
+will receive a Small amount of negative Balance.
+
+Third, the players will both receive Heat.
+The one with better balance
+will receive Small Heat,
+and the other will Large Heat.
+If both balances are equal,
+both players receive Medium Heat.
+
+But how is "better balance" defined?
+The equation is:
+| Balance / Water |
+Which is to say,
+the value compared is equal to
+the absolute value
+of Balance as a percent of Water.
+So 1/11 beats 1/10
+and -2/21 beats 1/10.
+
+Important note:
+The advantage of a Frict will be calculated
+before the Distance effects
+of an Advance or Retreat are applied.
+(This is why you should read the source code.)
+
+ACTIONS
+
+There are six actions.
+Mastering all six,
+and knowing when to use them,
+is the key to advanced gameplay.
+Actions cannot be used twice consecutively,
+so planning ahead is important.
+
+The effects of these moves use variables
+to allow for easy recalibration.
+There are only three strengths:
+Small = 1
+Medium = 2
+Large = 4
+These values can be changed
+in dr_default.py#MODULE SETTINGS.
+
+ACTIONS::ADVANCE
+
+An Advance is a movement towards the other player,
+either literally or figuratively.
+It could represent a bold word
+or a simple closing of physical space.
+
+Advance costs Small Calm.
+
+It reduces Balance by Small.
+Since Retreat increases Balance by Small,
+a negative Balance signifies
+that one Advances too much,
+and a positive Balance signifies
+that one retreats too much.
+
+If the distance is already 0,
+it will not change.
+In this situation,
+Advance might be called
+"Push" or "Grind".
+The Balance will change,
+but according to the rules of the Frict.
+
+If Advance causes the players to touch
+(ie, to arrive at 0 Distance),
+a Frict will result.
+See EVENTS::FRICT.
+
+ACTIONS::RETREAT
+
+Retreat costs Small Calm.
+
+Retreat reduces Balance by Small
+
+Retreat increases Distance by one.
+
+ACTIONS::TOUCH
+
+Touch could represent
+an instance of innocuous contact,
+or a sensual caress, or a strike.
+
+Touch costs Medium Calm.
+As such, it can be
+a bit of a gamble.
+It can also be very rewarding.
+
+A Touch is considered successful
+if the Distance at the END of the turn
+is -1, 0, or 1.
+This means a Touch works
+if the players move into close proximity.
+So, if the Distance is 1
+and the target Retreats,
+a Touch will fail, but
+if the Distance is 2
+and the target Advances,
+the Touch will succeede.
+
+If a Touch is successful
+it results in a Frict
+that gives Heat to the target
+but does not give Heat to the actor.
+
+ACTIONS::EVADE
+
+Evade represents a dodge or evasion.
+It could be a subtle social maneuver,
+or a literal leap to the side.
+
+Evade is the antidote to a Frict.
+
+It prevents the Frict effect
+of an Advance or a Touch.
+If a Frict is prevented in this way,
+Evade restores Small Calm
+(since you look so cool).
+If Evade fails,
+it costs Medium Calm
+(since you look so silly).
+
+ACTIONS::BREATHE
+
+Breathing is essential.
+
+Breathe restores all Calm,
+restores Will by Small,
+reduces Heat by Small,
+and moves Balance toward 0 by Small.
+Note that the latter effect
+is extremely important,
+as it can give one the advantage
+in the event of a future Frict.
+
+However, it will be interrupted
+if the other player uses a move
+which results in a Frict.
+In this case,
+it will restore Calm by Large,
+but produce no other effect.
+
+ACTIONS::JEST
+
+A Jest is a joke or a tease.
+Jests are powerful if used properly.
+
+A Jest costs Medium Calm.
+
+It gives Small Heat to the target,
+and increases their Balance by Small.
+The latter effect is important,
+because it can be used
+to gain the advantage in a future Frict.
+This might force the target to Advance.
+These effects will not occur
+if the target has chosen to Breathe.
+This is equivalent to a joke falling flat.
+
+If the target chooses to Retreat or Evade, however,
+a Jest will add an additional Medium Heat
+(for a total of Small + Medium).
+In this case, it is presumed
+that the actor was teasing the target
+for their reluctance to engage directly.
+
+GAME END
+
+The game will end
+if one player is exhausted
+(ie their Will is less than 0)
+or if the Distance exceeds the maximum.
+
+Depending on what the game represents,
+any end condition could be
+a victory or defeat for either player.
+That's up to you.
+I mean to deconstruct
+the ideas of winning and losing.
+No victory or loss
+is ever complete.
+

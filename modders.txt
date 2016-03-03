@@ -1,0 +1,63 @@
+If you want to get started now
+dr_default.py (ie dance rules default) is the only module you need
+(as it includes all of the game rules)
+but ds_2p.py (ie dance story two player) 
+provides a good example of how to use it.
+There are only two functions in dance_game.py
+which the end-user needs to know:
+
+set_stage( p0_e, p0_a, p0_f, p0_w, p1_e, p1_a, p1_f, p1_w, d0, d_max):
+	Accepts:
+		- 8 values representing the initial statistics:
+			- player 0's earth
+			- player 0's air
+			- player 0's fire
+			- player 0's water
+			- player 1's earth
+			- player 1's air
+			- player 1's fire
+			- player 1's water
+		- The initial distance
+		- The maximum distance.
+			(A distance greater than max
+			will cause turn() to return
+			a "flee" gameover message.)
+	Returns:
+		- A JSON object which can be used by your display function
+		to draw the game's state to the screen.
+		- In addition to the aforementioned stats,
+		this JSON object also includes:
+			- four substats for each player: will, calm, passion, and balance
+			- one 'choice' for each player, to be used by your
+			  input function.
+			- a list of key bindings like 'h' : 'advance'
+			- gameOver: 0 (Will switch to one when the game ends.)
+			- gameOverMessage: default "ERROR" (Will tell you why the game ended.
+		If gameOver == 1 and gameOverMessage == "ERROR",
+		then something has gone wrong.
+		
+turn( JSON ):
+	Accepts:
+		- A JSON of the sort produced by set_stage()
+	Returns:
+		- A modified JSON describing the new game state
+	Throws:
+		- NoSuchMove: If a player typed a move which does not exist.
+		- IllegalMove: If a move is not valid in the current
+		  situation.
+		- GameOver: This happens if you feed turn() a JSON
+		for which gameOver == 1
+
+ds_ = dance story
+	start()
+dr_ = dance rules
+	set_stage( dance )
+	turn( dance )
+dd_ = dance display
+	display( dance )
+	get_in( dance, player)
+
+This game is unlicensed!
+That means you can change it, reproduce it, and profit from it.
+I really don't care.
+Hopefully everything is easy to understand and change.
