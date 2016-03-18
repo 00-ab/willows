@@ -2,8 +2,6 @@ DANCE
 2015
 A. B.
 
-T E S T
-
 DANCE is a two-player game
 depicting tense interaction
 via a language of actions and elements.
